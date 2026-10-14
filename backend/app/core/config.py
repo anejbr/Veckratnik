@@ -6,7 +6,7 @@ class Settings(BaseSettings):
 
     database_url: str = "postgresql+psycopg://veckratnik:veckratnik@localhost:5432/veckratnik"
 
-    jwt_secret: str = "dev-secret"
+    jwt_secret: str = "razvojna-skrivnost-ki-je-dovolj-dolga"
     jwt_algorithm: str = "HS256"
     jwt_expire_minutes: int = 720
 
