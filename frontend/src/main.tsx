@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { RouterProvider } from 'react-router'
 
+import { AuthProvider } from '@/auth/AuthProvider'
 import { Toaster } from '@/components/ui/sonner'
 import { TooltipProvider } from '@/components/ui/tooltip'
 import { router } from '@/router'
@@ -17,10 +18,12 @@ const queryClient = new QueryClient({
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <RouterProvider router={router} />
-        <Toaster theme="light" richColors position="top-center" />
-      </TooltipProvider>
+      <AuthProvider>
+        <TooltipProvider>
+          <RouterProvider router={router} />
+          <Toaster theme="light" richColors position="top-center" />
+        </TooltipProvider>
+      </AuthProvider>
     </QueryClientProvider>
   </StrictMode>,
 )
