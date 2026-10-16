@@ -16,8 +16,13 @@ FIELD_NAMES = {
 
 
 def _message(error: dict) -> str:
-    loc = [str(part) for part in error.get("loc", []) if part not in ("body", "query", "path")]
-    field = FIELD_NAMES.get(loc[0], loc[0]) if loc else "Vnos"
+    loc = [part for part in error.get("loc", []) if part not in ("body", "query", "path")]
+    if len(loc) > 1 and loc[0] == "questions" and isinstance(loc[1], int):
+        field = f"Naloga {loc[1] + 1}"
+    elif loc:
+        field = FIELD_NAMES.get(str(loc[0]), str(loc[0]))
+    else:
+        field = "Vnos"
     ctx = error.get("ctx") or {}
     match error.get("type"):
         case "missing":
@@ -35,7 +40,8 @@ def _message(error: dict) -> str:
         case "value_error" if loc and loc[0] == "email":
             return f"{field}: ni veljaven e-naslov."
         case _:
-            return f"{field}: {error.get('msg', 'neveljavna vrednost')}"
+            msg = str(error.get("msg", "neveljavna vrednost")).removeprefix("Value error, ")
+            return f"{field}: {msg}"
 
 
 async def validation_exception_handler(_: Request, exc: RequestValidationError) -> JSONResponse:
