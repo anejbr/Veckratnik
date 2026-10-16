@@ -10,10 +10,12 @@ from pydantic import BaseModel, Field, field_validator, model_validator
 
 from app.services.expr import ExpressionError, evaluate
 
-COMMON_FIELDS = {"type", "prompt", "points", "hint", "explanation"}
+COMMON_FIELDS = {"id", "type", "prompt", "points", "hint", "explanation"}
 
 
 class QuestionBase(BaseModel):
+    # id obstoječe naloge pri urejanju (da statistika po nalogah ostane povezana)
+    id: int | None = None
     prompt: str = Field(default="", max_length=2000)
     points: int = Field(default=1, ge=0, le=100)
     hint: str | None = Field(default=None, max_length=500)
