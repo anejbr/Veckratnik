@@ -8,6 +8,7 @@ import { StudentLoginPage } from '@/pages/auth/StudentLoginPage'
 import { StudentRegisterPage } from '@/pages/auth/StudentRegisterPage'
 import { TeacherLoginPage } from '@/pages/auth/TeacherLoginPage'
 import { TeacherRegisterPage } from '@/pages/auth/TeacherRegisterPage'
+import { QuizDetailPage } from '@/pages/quizzes/QuizDetailPage'
 import { QuizListPage } from '@/pages/quizzes/QuizListPage'
 
 export const router = createBrowserRouter([
@@ -21,7 +22,10 @@ export const router = createBrowserRouter([
     children: [
       {
         element: <RequireAuth />,
-        children: [{ path: '/kvizi', element: <QuizListPage /> }],
+        children: [
+          { path: '/kvizi', element: <QuizListPage /> },
+          { path: '/kvizi/:quizId', element: <QuizDetailPage /> },
+        ],
       },
       { path: '*', element: <NotFoundPage /> },
     ],
