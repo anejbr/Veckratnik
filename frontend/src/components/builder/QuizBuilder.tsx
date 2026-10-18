@@ -19,6 +19,7 @@ import { toast } from 'sonner'
 import { ConfirmDialog } from '@/components/ConfirmDialog'
 import { AppearancePanel } from '@/components/builder/AppearancePanel'
 import { ElementPalette, PaletteIcon } from '@/components/builder/ElementPalette'
+import { PreviewPanel } from '@/components/builder/PreviewPanel'
 import { CANVAS_ID, QuestionCanvas } from '@/components/builder/QuestionCanvas'
 import { QuestionEditor } from '@/components/builder/QuestionEditor'
 import { SettingsPanel } from '@/components/builder/SettingsPanel'
@@ -171,6 +172,7 @@ export function QuizBuilder({ quizId, initial }: QuizBuilderProps) {
           <TabsTrigger value="naloge">Naloge</TabsTrigger>
           <TabsTrigger value="videz">Videz</TabsTrigger>
           <TabsTrigger value="nastavitve">Nastavitve</TabsTrigger>
+          <TabsTrigger value="predogled">Predogled</TabsTrigger>
         </TabsList>
 
         <TabsContent value="naloge">
@@ -220,6 +222,10 @@ export function QuizBuilder({ quizId, initial }: QuizBuilderProps) {
 
         <TabsContent value="nastavitve">
           <SettingsPanel draft={draft} />
+        </TabsContent>
+
+        <TabsContent value="predogled">
+          <PreviewPanel draft={draft} />
         </TabsContent>
       </Tabs>
 
