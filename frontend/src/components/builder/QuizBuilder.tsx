@@ -21,6 +21,7 @@ import { AppearancePanel } from '@/components/builder/AppearancePanel'
 import { ElementPalette, PaletteIcon } from '@/components/builder/ElementPalette'
 import { CANVAS_ID, QuestionCanvas } from '@/components/builder/QuestionCanvas'
 import { QuestionEditor } from '@/components/builder/QuestionEditor'
+import { SettingsPanel } from '@/components/builder/SettingsPanel'
 import { toPayload, useQuizDraft } from '@/components/builder/useQuizDraft'
 import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
@@ -169,6 +170,7 @@ export function QuizBuilder({ quizId, initial }: QuizBuilderProps) {
         <TabsList>
           <TabsTrigger value="naloge">Naloge</TabsTrigger>
           <TabsTrigger value="videz">Videz</TabsTrigger>
+          <TabsTrigger value="nastavitve">Nastavitve</TabsTrigger>
         </TabsList>
 
         <TabsContent value="naloge">
@@ -214,6 +216,10 @@ export function QuizBuilder({ quizId, initial }: QuizBuilderProps) {
 
         <TabsContent value="videz">
           <AppearancePanel draft={draft} />
+        </TabsContent>
+
+        <TabsContent value="nastavitve">
+          <SettingsPanel draft={draft} />
         </TabsContent>
       </Tabs>
 
