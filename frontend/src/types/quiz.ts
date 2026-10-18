@@ -31,3 +31,8 @@ export type Tag = {
   name: string
   quiz_count: number
 }
+
+export type TeacherQuizSummary = QuizSummary & {
+  access_code: string | null
+  attempt_count: number
+}

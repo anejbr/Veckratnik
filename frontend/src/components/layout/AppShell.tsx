@@ -8,7 +8,10 @@ import type { UserRole } from '@/types/api'
 
 type NavItem = { to: string; label: string; roles?: UserRole[] }
 
-const navItems: NavItem[] = [{ to: '/kvizi', label: 'Kvizi' }]
+const navItems: NavItem[] = [
+  { to: '/kvizi', label: 'Kvizi' },
+  { to: '/ucitelj/kvizi', label: 'Moji kvizi', roles: ['teacher'] },
+]
 
 export function AppShell() {
   const { user } = useAuth()
