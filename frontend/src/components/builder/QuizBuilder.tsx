@@ -17,6 +17,7 @@ import { ArrowLeft, Eye, Save } from 'lucide-react'
 import { toast } from 'sonner'
 
 import { ConfirmDialog } from '@/components/ConfirmDialog'
+import { AppearancePanel } from '@/components/builder/AppearancePanel'
 import { ElementPalette, PaletteIcon } from '@/components/builder/ElementPalette'
 import { CANVAS_ID, QuestionCanvas } from '@/components/builder/QuestionCanvas'
 import { QuestionEditor } from '@/components/builder/QuestionEditor'
@@ -167,6 +168,7 @@ export function QuizBuilder({ quizId, initial }: QuizBuilderProps) {
       <Tabs defaultValue="naloge" className="gap-4">
         <TabsList>
           <TabsTrigger value="naloge">Naloge</TabsTrigger>
+          <TabsTrigger value="videz">Videz</TabsTrigger>
         </TabsList>
 
         <TabsContent value="naloge">
@@ -208,6 +210,10 @@ export function QuizBuilder({ quizId, initial }: QuizBuilderProps) {
               )}
             </DragOverlay>
           </DndContext>
+        </TabsContent>
+
+        <TabsContent value="videz">
+          <AppearancePanel draft={draft} />
         </TabsContent>
       </Tabs>
 
