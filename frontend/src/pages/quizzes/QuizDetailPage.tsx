@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 import { Link, useParams } from 'react-router'
-import { ArrowLeft, BookOpen, Clock, ListChecks, Lock, Repeat, User } from 'lucide-react'
+import { ArrowLeft, BookOpen, Clock, ListChecks, Lock, Pencil, Repeat, User } from 'lucide-react'
 
 import { QuizCover } from '@/components/quiz/QuizCover'
 import { Badge } from '@/components/ui/badge'
@@ -74,9 +74,18 @@ export function QuizDetailPage() {
             ))}
           </ul>
 
-          <Button size="lg" className="h-12 w-full text-base sm:w-auto sm:px-8" disabled>
-            Reševanje kmalu
-          </Button>
+          <div className="flex flex-wrap gap-2">
+            <Button size="lg" className="h-12 w-full text-base sm:w-auto sm:px-8" disabled>
+              Reševanje kmalu
+            </Button>
+            {q.is_owner && (
+              <Button asChild size="lg" variant="outline" className="h-12 w-full text-base sm:w-auto">
+                <Link to={`/ucitelj/kvizi/${q.id}/uredi`}>
+                  <Pencil /> Uredi kviz
+                </Link>
+              </Button>
+            )}
+          </div>
 
           {q.sources.length > 0 && (
             <details className="rounded-xl bg-muted/60 p-4 text-sm">
