@@ -17,6 +17,9 @@ export type QuizSummary = {
   owner_name: string
   created_at: string
   updated_at: string
+  my_attempts: number
+  my_best_percent: number | null
+  my_best_seconds: number | null
 }
 
 export type QuizPublicDetail = QuizSummary & {
