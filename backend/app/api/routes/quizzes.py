@@ -4,6 +4,7 @@ from sqlalchemy import func, or_, select
 from app.api.deps import CurrentUser, DbSession
 from app.models import Quiz, QuizStatus, Tag, quiz_tags
 from app.schemas.quiz import QuizPublicDetail, QuizSummary, TagOut
+from app.services.attempts import my_quiz_stats
 from app.services.quizzes import QUIZ_LOAD_OPTIONS, quiz_settings, summary_fields
 
 router = APIRouter(prefix="/api", tags=["quizzes"])
@@ -19,7 +20,7 @@ def get_visible_quiz(db: DbSession, quiz_id: int, user: CurrentUser) -> Quiz:
 @router.get("/quizzes", response_model=list[QuizSummary])
 def list_quizzes(
     db: DbSession,
-    _: CurrentUser,
+    user: CurrentUser,
     search: str | None = Query(default=None, max_length=100),
     tag: str | None = None,
     grade: int | None = Query(default=None, ge=1, le=9),
@@ -37,7 +38,9 @@ def list_quizzes(
         stmt = stmt.where(Quiz.tags.any(Tag.name == tag.strip().lower()))
     if grade:
         stmt = stmt.where(Quiz.grade == grade)
-    return [QuizSummary(**summary_fields(quiz)) for quiz in db.scalars(stmt)]
+    quizzes = list(db.scalars(stmt))
+    mine = my_quiz_stats(db, user.id, [quiz.id for quiz in quizzes])
+    return [QuizSummary(**summary_fields(quiz), **mine.get(quiz.id, {})) for quiz in quizzes]
 
 
 @router.get("/quizzes/{quiz_id}", response_model=QuizPublicDetail)
@@ -46,6 +49,7 @@ def get_quiz(quiz_id: int, db: DbSession, user: CurrentUser) -> QuizPublicDetail
     settings = quiz_settings(quiz)
     return QuizPublicDetail(
         **summary_fields(quiz),
+        **my_quiz_stats(db, user.id, [quiz.id]).get(quiz.id, {}),
         sources=quiz.sources or [],
         max_attempts=settings.max_attempts,
         show_timer=settings.show_timer,

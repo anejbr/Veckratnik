@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.api.routes import auth, quizzes, teacher
+from app.api.routes import attempts, auth, quizzes, teacher
 from app.core.config import settings
 from app.core.errors import register_error_handlers
 
@@ -19,6 +19,7 @@ app.add_middleware(
 app.include_router(auth.router)
 app.include_router(quizzes.router)
 app.include_router(teacher.router)
+app.include_router(attempts.router)
 
 
 @app.get("/api/health")
