@@ -91,6 +91,10 @@ class QuizSummary(BaseModel):
     owner_name: str
     created_at: datetime
     updated_at: datetime
+    # rezultati prijavljenega uporabnika
+    my_attempts: int = 0
+    my_best_percent: float | None = None
+    my_best_seconds: int | None = None
 
 
 class QuizPublicDetail(QuizSummary):
