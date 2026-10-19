@@ -10,6 +10,7 @@ import { TeacherLoginPage } from '@/pages/auth/TeacherLoginPage'
 import { TeacherRegisterPage } from '@/pages/auth/TeacherRegisterPage'
 import { QuizDetailPage } from '@/pages/quizzes/QuizDetailPage'
 import { QuizListPage } from '@/pages/quizzes/QuizListPage'
+import { QuizPlayPage } from '@/pages/quizzes/QuizPlayPage'
 import { MyQuizzesPage } from '@/pages/teacher/MyQuizzesPage'
 import { QuizBuilderPage } from '@/pages/teacher/QuizBuilderPage'
 
@@ -19,6 +20,10 @@ export const router = createBrowserRouter([
   { path: '/prijava/ucitelj', element: <TeacherLoginPage /> },
   { path: '/registracija/ucenec', element: <StudentRegisterPage /> },
   { path: '/registracija/ucitelj', element: <TeacherRegisterPage /> },
+  {
+    element: <RequireAuth />,
+    children: [{ path: '/kvizi/:quizId/resevanje/:attemptId', element: <QuizPlayPage /> }],
+  },
   {
     element: <AppShell />,
     children: [
