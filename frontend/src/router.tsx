@@ -9,6 +9,7 @@ import { StudentRegisterPage } from '@/pages/auth/StudentRegisterPage'
 import { TeacherLoginPage } from '@/pages/auth/TeacherLoginPage'
 import { TeacherRegisterPage } from '@/pages/auth/TeacherRegisterPage'
 import { QuizDetailPage } from '@/pages/quizzes/QuizDetailPage'
+import { MyResultsPage } from '@/pages/quizzes/MyResultsPage'
 import { QuizListPage } from '@/pages/quizzes/QuizListPage'
 import { QuizPlayPage } from '@/pages/quizzes/QuizPlayPage'
 import { QuizResultPage } from '@/pages/quizzes/QuizResultPage'
@@ -34,6 +35,7 @@ export const router = createBrowserRouter([
           { path: '/kvizi', element: <QuizListPage /> },
           { path: '/kvizi/:quizId', element: <QuizDetailPage /> },
           { path: '/rezultati/:attemptId', element: <QuizResultPage /> },
+          { path: '/moji-rezultati', element: <MyResultsPage /> },
         ],
       },
       {

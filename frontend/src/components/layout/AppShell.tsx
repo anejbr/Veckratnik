@@ -10,6 +10,7 @@ type NavItem = { to: string; label: string; roles?: UserRole[] }
 
 const navItems: NavItem[] = [
   { to: '/kvizi', label: 'Kvizi' },
+  { to: '/moji-rezultati', label: 'Moji rezultati' },
   { to: '/ucitelj/kvizi', label: 'Moji kvizi', roles: ['teacher'] },
 ]
 
