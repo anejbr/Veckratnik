@@ -6,7 +6,9 @@ from sqlalchemy import func, select
 from app.api.deps import DbSession, TeacherUser
 from app.models import Attempt, Question, Quiz, QuizStatus, User, UserRole
 from app.schemas.quiz import QuizIn, TeacherQuizDetail, TeacherQuizSummary
+from app.schemas.stats import QuizStats
 from app.services.quizzes import QUIZ_LOAD_OPTIONS, apply_quiz_input, summary_fields, teacher_detail
+from app.services.stats import quiz_stats
 
 router = APIRouter(prefix="/api/teacher", tags=["teacher"])
 
@@ -116,3 +118,8 @@ def duplicate_quiz(quiz_id: int, db: DbSession, teacher: TeacherUser) -> dict[st
     db.add(copy)
     db.commit()
     return teacher_detail(_reload(db, copy.id))
+
+
+@router.get("/quizzes/{quiz_id}/stats", response_model=QuizStats)
+def get_quiz_stats(quiz_id: int, db: DbSession, teacher: TeacherUser) -> dict[str, Any]:
+    return quiz_stats(db, get_own_quiz(db, quiz_id, teacher))
