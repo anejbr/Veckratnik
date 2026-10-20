@@ -1,20 +1,39 @@
-import { useQuery } from '@tanstack/react-query'
-import { Link, useParams } from 'react-router'
-import { ArrowLeft, BookOpen, Clock, ListChecks, Lock, Pencil, Repeat, User } from 'lucide-react'
+import { useState } from 'react'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { Link, useNavigate, useParams } from 'react-router'
+import { ArrowLeft, BookOpen, Clock, ListChecks, Lock, Pencil, Play, Repeat, Trophy, User } from 'lucide-react'
+import { toast } from 'sonner'
 
+import { AccessCodeDialog } from '@/components/quiz/AccessCodeDialog'
 import { QuizCover } from '@/components/quiz/QuizCover'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
-import { api, errorMessage } from '@/lib/api'
-import { formatDuration, plural, taskWord } from '@/lib/format'
+import { ApiError, api, errorMessage } from '@/lib/api'
+import { formatDuration, formatPercent, plural, taskWord } from '@/lib/format'
+import type { AttemptView } from '@/types/attempt'
 import type { QuizPublicDetail } from '@/types/quiz'
 
 export function QuizDetailPage() {
   const { quizId } = useParams()
+  const navigate = useNavigate()
+  const queryClient = useQueryClient()
+  const [codeOpen, setCodeOpen] = useState(false)
   const quiz = useQuery({
     queryKey: ['quiz', quizId],
     queryFn: () => api<QuizPublicDetail>(`/quizzes/${quizId}`),
+  })
+
+  const start = useMutation({
+    mutationFn: (accessCode?: string) =>
+      api<AttemptView>(`/quizzes/${quizId}/attempts`, { method: 'POST', body: { access_code: accessCode ?? null } }),
+    onSuccess: (attempt) => {
+      queryClient.setQueryData(['attempt', String(attempt.id)], attempt)
+      navigate(`/kvizi/${attempt.quiz_id}/resevanje/${attempt.id}`)
+    },
+    onError: (error) => {
+      if (!codeOpen) toast.error(errorMessage(error))
+    },
   })
 
   if (quiz.isPending) return <Skeleton className="h-96 rounded-3xl" />
@@ -75,8 +94,13 @@ export function QuizDetailPage() {
           </ul>
 
           <div className="flex flex-wrap gap-2">
-            <Button size="lg" className="h-12 w-full text-base sm:w-auto sm:px-8" disabled>
-              Reševanje kmalu
+            <Button
+              size="lg"
+              className="h-12 w-full text-base sm:w-auto sm:px-8"
+              disabled={start.isPending}
+              onClick={() => (q.locked && !q.is_owner ? setCodeOpen(true) : start.mutate(undefined))}
+            >
+              <Play /> {q.my_attempts > 0 ? 'Reši znova' : 'Začni reševati'}
             </Button>
             {q.is_owner && (
               <Button asChild size="lg" variant="outline" className="h-12 w-full text-base sm:w-auto">
@@ -86,6 +110,18 @@ export function QuizDetailPage() {
               </Button>
             )}
           </div>
+
+          {q.my_attempts > 0 && (
+            <div className="flex flex-wrap items-center gap-x-6 gap-y-1 rounded-2xl bg-secondary px-4 py-3 text-sm font-semibold text-secondary-foreground">
+              <span className="flex items-center gap-1.5">
+                <Trophy className="size-4" /> Tvoj najboljši rezultat: {formatPercent(q.my_best_percent)}
+              </span>
+              <span>Najhitrejši čas: {formatDuration(q.my_best_seconds)}</span>
+              <Link to="/moji-rezultati" className="underline-offset-2 hover:underline">
+                {plural(q.my_attempts, ['poskus', 'poskusa', 'poskusi', 'poskusov'])}
+              </Link>
+            </div>
+          )}
 
           {q.sources.length > 0 && (
             <details className="rounded-xl bg-muted/60 p-4 text-sm">
@@ -101,6 +137,17 @@ export function QuizDetailPage() {
           )}
         </div>
       </div>
+
+      <AccessCodeDialog
+        open={codeOpen}
+        onOpenChange={(open) => {
+          setCodeOpen(open)
+          start.reset()
+        }}
+        onSubmit={(code) => start.mutate(code)}
+        pending={start.isPending}
+        error={start.error instanceof ApiError ? start.error.message : null}
+      />
     </div>
   )
 }

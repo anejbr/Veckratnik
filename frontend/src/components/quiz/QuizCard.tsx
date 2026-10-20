@@ -1,9 +1,9 @@
 import { Link } from 'react-router'
-import { Clock, ListChecks } from 'lucide-react'
+import { Clock, ListChecks, Trophy } from 'lucide-react'
 
 import { QuizCover } from '@/components/quiz/QuizCover'
 import { Badge } from '@/components/ui/badge'
-import { formatDuration, taskWord } from '@/lib/format'
+import { formatDuration, formatPercent, taskWord } from '@/lib/format'
 import type { QuizSummary } from '@/types/quiz'
 
 export function QuizCard({ quiz }: { quiz: QuizSummary }) {
@@ -39,6 +39,11 @@ export function QuizCard({ quiz }: { quiz: QuizSummary }) {
           {quiz.time_limit_seconds && (
             <span className="flex items-center gap-1">
               <Clock className="size-3.5" /> {formatDuration(quiz.time_limit_seconds)}
+            </span>
+          )}
+          {quiz.my_attempts > 0 && (
+            <span className="flex items-center gap-1 text-primary">
+              <Trophy className="size-3.5" /> {formatPercent(quiz.my_best_percent)}
             </span>
           )}
           <span className="ml-auto truncate">{quiz.owner_name}</span>

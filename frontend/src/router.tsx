@@ -9,7 +9,10 @@ import { StudentRegisterPage } from '@/pages/auth/StudentRegisterPage'
 import { TeacherLoginPage } from '@/pages/auth/TeacherLoginPage'
 import { TeacherRegisterPage } from '@/pages/auth/TeacherRegisterPage'
 import { QuizDetailPage } from '@/pages/quizzes/QuizDetailPage'
+import { MyResultsPage } from '@/pages/quizzes/MyResultsPage'
 import { QuizListPage } from '@/pages/quizzes/QuizListPage'
+import { QuizPlayPage } from '@/pages/quizzes/QuizPlayPage'
+import { QuizResultPage } from '@/pages/quizzes/QuizResultPage'
 import { MyQuizzesPage } from '@/pages/teacher/MyQuizzesPage'
 import { QuizBuilderPage } from '@/pages/teacher/QuizBuilderPage'
 
@@ -20,6 +23,10 @@ export const router = createBrowserRouter([
   { path: '/registracija/ucenec', element: <StudentRegisterPage /> },
   { path: '/registracija/ucitelj', element: <TeacherRegisterPage /> },
   {
+    element: <RequireAuth />,
+    children: [{ path: '/kvizi/:quizId/resevanje/:attemptId', element: <QuizPlayPage /> }],
+  },
+  {
     element: <AppShell />,
     children: [
       {
@@ -27,6 +34,8 @@ export const router = createBrowserRouter([
         children: [
           { path: '/kvizi', element: <QuizListPage /> },
           { path: '/kvizi/:quizId', element: <QuizDetailPage /> },
+          { path: '/rezultati/:attemptId', element: <QuizResultPage /> },
+          { path: '/moji-rezultati', element: <MyResultsPage /> },
         ],
       },
       {
