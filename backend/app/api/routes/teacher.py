@@ -1,4 +1,7 @@
+import csv
+import io
 from typing import Any
+from zoneinfo import ZoneInfo
 
 from fastapi import APIRouter, HTTPException, Response, status
 from sqlalchemy import func, select
@@ -6,9 +9,14 @@ from sqlalchemy import func, select
 from app.api.deps import DbSession, TeacherUser
 from app.models import Attempt, Question, Quiz, QuizStatus, User, UserRole
 from app.schemas.quiz import QuizIn, TeacherQuizDetail, TeacherQuizSummary
+from app.schemas.stats import QuizStats
+from app.services.attempts import aware, percent
 from app.services.quizzes import QUIZ_LOAD_OPTIONS, apply_quiz_input, summary_fields, teacher_detail
+from app.services.stats import finished_student_attempts, quiz_stats
 
 router = APIRouter(prefix="/api/teacher", tags=["teacher"])
+
+LOCAL_TZ = ZoneInfo("Europe/Ljubljana")
 
 
 def get_own_quiz(db: DbSession, quiz_id: int, teacher: TeacherUser) -> Quiz:
@@ -116,3 +124,38 @@ def duplicate_quiz(quiz_id: int, db: DbSession, teacher: TeacherUser) -> dict[st
     db.add(copy)
     db.commit()
     return teacher_detail(_reload(db, copy.id))
+
+
+@router.get("/quizzes/{quiz_id}/stats", response_model=QuizStats)
+def get_quiz_stats(quiz_id: int, db: DbSession, teacher: TeacherUser) -> dict[str, Any]:
+    return quiz_stats(db, get_own_quiz(db, quiz_id, teacher))
+
+
+@router.get("/quizzes/{quiz_id}/results.csv")
+def export_results(quiz_id: int, db: DbSession, teacher: TeacherUser) -> Response:
+    """Rezultati učencev kot CSV (podpičje in BOM, da se pravilno odpre v Excelu)."""
+    quiz = get_own_quiz(db, quiz_id, teacher)
+    buffer = io.StringIO()
+    writer = csv.writer(buffer, delimiter=";")
+    writer.writerow(["Učenec", "Uporabniško ime", "Razred", "Točke", "Največ točk", "Odstotek", "Čas (s)", "Oddano"])
+    for attempt in reversed(finished_student_attempts(db, quiz.id)):
+        writer.writerow(
+            [
+                attempt.user.full_name,
+                attempt.user.username,
+                attempt.user.grade or "",
+                str(attempt.score).replace(".", ","),
+                str(attempt.max_score).replace(".", ","),
+                str(percent(attempt.score, attempt.max_score)).replace(".", ","),
+                attempt.duration_seconds or 0,
+                aware(attempt.finished_at).astimezone(LOCAL_TZ).strftime("%d. %m. %Y %H:%M")
+                if attempt.finished_at
+                else "",
+            ]
+        )
+    filename = f"rezultati-kviz-{quiz.id}.csv"
+    return Response(
+        content="\ufeff" + buffer.getvalue(),
+        media_type="text/csv; charset=utf-8",
+        headers={"Content-Disposition": f'attachment; filename="{filename}"'},
+    )
