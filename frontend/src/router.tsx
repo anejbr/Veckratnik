@@ -15,6 +15,7 @@ import { QuizPlayPage } from '@/pages/quizzes/QuizPlayPage'
 import { QuizResultPage } from '@/pages/quizzes/QuizResultPage'
 import { MyQuizzesPage } from '@/pages/teacher/MyQuizzesPage'
 import { QuizBuilderPage } from '@/pages/teacher/QuizBuilderPage'
+import { QuizStatsPage } from '@/pages/teacher/QuizStatsPage'
 
 export const router = createBrowserRouter([
   { path: '/', element: <LandingPage /> },
@@ -44,6 +45,7 @@ export const router = createBrowserRouter([
           { path: '/ucitelj/kvizi', element: <MyQuizzesPage /> },
           { path: '/ucitelj/kvizi/nov', element: <QuizBuilderPage /> },
           { path: '/ucitelj/kvizi/:quizId/uredi', element: <QuizBuilderPage /> },
+          { path: '/ucitelj/kvizi/:quizId/statistika', element: <QuizStatsPage /> },
         ],
       },
       { path: '*', element: <NotFoundPage /> },

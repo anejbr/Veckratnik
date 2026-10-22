@@ -13,7 +13,7 @@ import {
 import { sortableKeyboardCoordinates } from '@dnd-kit/sortable'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { Link, useBlocker, useNavigate } from 'react-router'
-import { ArrowLeft, Eye, Save } from 'lucide-react'
+import { ArrowLeft, ChartColumn, Eye, Save } from 'lucide-react'
 import { toast } from 'sonner'
 
 import { ConfirmDialog } from '@/components/ConfirmDialog'
@@ -146,11 +146,18 @@ export function QuizBuilder({ quizId, initial }: QuizBuilderProps) {
             </Label>
           </div>
           {quizId && (
-            <Button asChild variant="outline">
-              <Link to={`/kvizi/${quizId}`}>
-                <Eye /> Odpri
-              </Link>
-            </Button>
+            <>
+              <Button asChild variant="ghost">
+                <Link to={`/ucitelj/kvizi/${quizId}/statistika`}>
+                  <ChartColumn /> Statistika
+                </Link>
+              </Button>
+              <Button asChild variant="outline">
+                <Link to={`/kvizi/${quizId}`}>
+                  <Eye /> Odpri
+                </Link>
+              </Button>
+            </>
           )}
           <Button onClick={onSave} disabled={save.isPending}>
             <Save /> {save.isPending ? 'Shranjujem …' : 'Shrani'}
