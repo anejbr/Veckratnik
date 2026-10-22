@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { Link, useNavigate } from 'react-router'
-import { Copy, Ellipsis, Eye, Pencil, Plus, Trash } from 'lucide-react'
+import { ChartColumn, Copy, Ellipsis, Eye, Pencil, Plus, Trash } from 'lucide-react'
 import { toast } from 'sonner'
 
 import { ConfirmDialog } from '@/components/ConfirmDialog'
@@ -113,6 +113,11 @@ export function MyQuizzesPage() {
                 </p>
               </div>
               <div className="flex shrink-0 items-center gap-1">
+                <Button asChild variant="ghost" size="sm" className="hidden sm:inline-flex">
+                  <Link to={`/ucitelj/kvizi/${quiz.id}/statistika`}>
+                    <ChartColumn /> Statistika
+                  </Link>
+                </Button>
                 <Button asChild variant="outline" size="sm" className="hidden sm:inline-flex">
                   <Link to={`/ucitelj/kvizi/${quiz.id}/uredi`}>
                     <Pencil /> Uredi
@@ -128,6 +133,11 @@ export function MyQuizzesPage() {
                     <DropdownMenuItem asChild className="sm:hidden">
                       <Link to={`/ucitelj/kvizi/${quiz.id}/uredi`}>
                         <Pencil /> Uredi
+                      </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild className="sm:hidden">
+                      <Link to={`/ucitelj/kvizi/${quiz.id}/statistika`}>
+                        <ChartColumn /> Statistika
                       </Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem asChild>

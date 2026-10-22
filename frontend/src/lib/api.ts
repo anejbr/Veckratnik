@@ -78,3 +78,16 @@ export function errorMessage(error: unknown): string {
   if (error instanceof ApiError) return error.message
   return 'Prišlo je do napake. Poskusi znova.'
 }
+
+/** Prenese datoteko z avtentikacijo (npr. izvoz CSV). */
+export async function downloadFile(path: string, filename: string): Promise<void> {
+  const token = tokenStorage.get()
+  const response = await fetch(`/api${path}`, { headers: token ? { Authorization: `Bearer ${token}` } : {} })
+  if (!response.ok) throw new ApiError(response.status, 'Datoteke ni bilo mogoče prenesti.')
+  const url = URL.createObjectURL(await response.blob())
+  const link = document.createElement('a')
+  link.href = url
+  link.download = filename
+  link.click()
+  URL.revokeObjectURL(url)
+}

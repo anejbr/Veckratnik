@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import { Link, useParams } from 'react-router'
-import { ArrowLeft, Clock, Pencil, Target, Trophy, Users } from 'lucide-react'
+import { ArrowLeft, Clock, Download, Pencil, Target, Trophy, Users } from 'lucide-react'
+import { toast } from 'sonner'
 
 import { AccessCodeChip } from '@/components/quiz/AccessCodeChip'
 import { QuizCover } from '@/components/quiz/QuizCover'
@@ -10,7 +11,7 @@ import { StudentTables } from '@/components/stats/StudentTables'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
-import { api, errorMessage } from '@/lib/api'
+import { api, downloadFile, errorMessage } from '@/lib/api'
 import { formatDuration, formatPercent, plural } from '@/lib/format'
 import type { QuizStats } from '@/types/stats'
 
@@ -50,11 +51,25 @@ export function QuizStatsPage() {
             {s.access_code && <AccessCodeChip code={s.access_code} />}
           </div>
         </div>
-        <Button asChild variant="outline">
-          <Link to={`/ucitelj/kvizi/${s.quiz_id}/uredi`}>
-            <Pencil /> Uredi
-          </Link>
-        </Button>
+        <div className="flex gap-2">
+          {summary.attempts > 0 && (
+            <Button
+              variant="outline"
+              onClick={() =>
+                downloadFile(`/teacher/quizzes/${s.quiz_id}/results.csv`, `rezultati-${s.quiz_id}.csv`).catch((error) =>
+                  toast.error(errorMessage(error)),
+                )
+              }
+            >
+              <Download /> Izvozi CSV
+            </Button>
+          )}
+          <Button asChild variant="outline">
+            <Link to={`/ucitelj/kvizi/${s.quiz_id}/uredi`}>
+              <Pencil /> Uredi
+            </Link>
+          </Button>
+        </div>
       </div>
 
       {summary.attempts === 0 ? (
