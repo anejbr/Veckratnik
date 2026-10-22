@@ -6,6 +6,7 @@ import { AccessCodeChip } from '@/components/quiz/AccessCodeChip'
 import { QuizCover } from '@/components/quiz/QuizCover'
 import { AttemptsByDayChart, DistributionChart, QuestionSuccessChart } from '@/components/stats/StatsCharts'
 import { StatTile } from '@/components/stats/StatTile'
+import { StudentTables } from '@/components/stats/StudentTables'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
@@ -93,6 +94,7 @@ export function QuizStatsPage() {
             <AttemptsByDayChart data={s.by_day} />
           </div>
           <QuestionSuccessChart data={s.questions} />
+          <StudentTables stats={s} />
         </>
       )}
     </div>

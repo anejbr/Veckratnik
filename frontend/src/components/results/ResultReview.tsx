@@ -15,7 +15,13 @@ function StatusIcon({ result }: { result: QuestionResult }) {
 }
 
 /** Pregled odgovorov po nalogah (za učenca in za učitelja). */
-export function ResultReview({ results, showExpected }: { results: QuestionResult[]; showExpected: boolean }) {
+type ResultReviewProps = {
+  results: QuestionResult[]
+  showExpected: boolean
+  givenLabel?: string
+}
+
+export function ResultReview({ results, showExpected, givenLabel = 'Tvoj odgovor' }: ResultReviewProps) {
   return (
     <ol className="space-y-3">
       {results.map((result, index) => (
@@ -58,7 +64,7 @@ export function ResultReview({ results, showExpected }: { results: QuestionResul
               ) : (
                 <dl className="grid gap-1 text-sm">
                   <div className="flex flex-wrap gap-x-2">
-                    <dt className="text-muted-foreground">Tvoj odgovor:</dt>
+                    <dt className="text-muted-foreground">{givenLabel}:</dt>
                     <dd className={cn('font-semibold', result.correct ? 'text-success' : 'text-destructive')}>
                       {result.given || '–'}
                     </dd>
