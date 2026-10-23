@@ -15,11 +15,13 @@ import { cn } from '@/lib/utils'
 import type { QuizSummary, Tag } from '@/types/quiz'
 
 const ALL_GRADES = 'vsi'
+const VISIBLE_TAGS = 8
 
 export function QuizListPage() {
   const { user } = useAuth()
   const [params, setParams] = useSearchParams()
   const [search, setSearch] = useState(params.get('iskanje') ?? '')
+  const [allTags, setAllTags] = useState(false)
   const debouncedSearch = useDebouncedValue(search.trim())
   const tag = params.get('tag')
   const grade = params.get('razred')
@@ -94,7 +96,10 @@ export function QuizListPage() {
 
       {tags.data && tags.data.length > 0 && (
         <div className="flex flex-wrap gap-2">
-          {tags.data.map((t) => {
+          {(allTags || tags.data.findIndex((t) => t.name === tag) >= VISIBLE_TAGS
+            ? tags.data
+            : tags.data.slice(0, VISIBLE_TAGS)
+          ).map((t) => {
             const active = tag === t.name
             return (
               <button
@@ -112,6 +117,15 @@ export function QuizListPage() {
               </button>
             )
           })}
+          {tags.data.length > VISIBLE_TAGS && (
+            <button
+              type="button"
+              onClick={() => setAllTags((v) => !v)}
+              className="rounded-full px-3 py-1 text-sm font-semibold text-primary hover:underline"
+            >
+              {allTags ? 'Manj' : `Še ${tags.data.length - VISIBLE_TAGS} …`}
+            </button>
+          )}
         </div>
       )}
 
