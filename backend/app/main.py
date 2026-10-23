@@ -1,9 +1,12 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
+from sqlalchemy import text
 
 from app.api.routes import attempts, auth, quizzes, teacher
 from app.core.config import settings
 from app.core.errors import register_error_handlers
+from app.db.session import engine
 
 app = FastAPI(title="Večkratnik API", version="0.1.0")
 register_error_handlers(app)
@@ -23,5 +26,11 @@ app.include_router(attempts.router)
 
 
 @app.get("/api/health")
-def health() -> dict[str, str]:
-    return {"status": "ok"}
+def health() -> JSONResponse:
+    """Preveri tudi povezavo z bazo (uporablja healthcheck v docker compose)."""
+    try:
+        with engine.connect() as connection:
+            connection.execute(text("SELECT 1"))
+    except Exception:  # noqa: BLE001
+        return JSONResponse({"status": "error", "database": "nedosegljiva"}, status_code=503)
+    return JSONResponse({"status": "ok", "database": "ok"})
