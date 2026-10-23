@@ -29,7 +29,7 @@ def list_quizzes(
         select(Quiz)
         .where(Quiz.status == QuizStatus.published)
         .options(*QUIZ_LOAD_OPTIONS)
-        .order_by(Quiz.updated_at.desc(), Quiz.id.desc())
+        .order_by(Quiz.updated_at.desc(), Quiz.id)
     )
     if search and search.strip():
         pattern = f"%{search.strip()}%"
