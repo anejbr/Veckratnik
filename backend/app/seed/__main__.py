@@ -11,6 +11,7 @@ from app.db.session import SessionLocal
 from app.models import Quiz, User, UserRole
 from app.schemas.quiz import QuizIn
 from app.seed.data import QUIZZES
+from app.seed.simulate import simulate_attempts
 from app.services.quizzes import apply_quiz_input
 
 DEMO_TEACHER = {"username": "ucitelj@veckratnik.si", "full_name": "Demo Učitelj", "password": "ucitelj123"}
@@ -46,15 +47,19 @@ def seed() -> None:
         db.add_all(students)
         db.flush()
 
+        quizzes = []
         for item in QUIZZES:
             data = QuizIn.model_validate({**item, "status": "published"})
             quiz = Quiz(owner_id=teacher.id)
             db.add(quiz)
             apply_quiz_input(db, quiz, data)
             db.flush()
+            quizzes.append(quiz)
 
+        # demo učenec ostane brez poskusov, da lahko kvize preizkusi od začetka
+        attempts = simulate_attempts(db, quizzes, students[1:])
         db.commit()
-        print(f"Dodanih {len(QUIZZES)} demo kvizov, 1 učitelj in {len(students)} učencev.")
+        print(f"Dodanih {len(QUIZZES)} demo kvizov, 1 učitelj, {len(students)} učencev in {attempts} poskusov.")
 
 
 if __name__ == "__main__":
