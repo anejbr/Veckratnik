@@ -63,10 +63,10 @@ export function QuestionTile({ question, number, selected, onSelect, onDuplicate
       <button type="button" onClick={onSelect} className="flex min-w-0 flex-1 items-center gap-3 text-left">
         <PaletteIcon type={question.type} />
         <span className="min-w-0 flex-1">
-          <span className="flex items-center gap-2 text-xs font-bold text-muted-foreground">
+          <span className="block truncate text-xs font-bold text-muted-foreground">
             {number ? `${number}. ` : ''}
             {catalogEntry(question.type).label}
-            {points > 0 && <span>· {plural(points, ['točka', 'točki', 'točke', 'točk'])}</span>}
+            {points > 0 && ` · ${plural(points, ['točka', 'točki', 'točke', 'točk'])}`}
           </span>
           <span className="block truncate font-semibold">{summary(question) || <em className="text-muted-foreground">brez besedila</em>}</span>
         </span>

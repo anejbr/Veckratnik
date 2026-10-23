@@ -21,7 +21,7 @@ export function ElementPalette({ onAdd }: ElementPaletteProps) {
       {CATALOG_GROUPS.map((group) => (
         <div key={group} className="space-y-1.5">
           <h3 className="text-xs font-bold tracking-wide text-muted-foreground uppercase">{group}</h3>
-          <div className="grid grid-cols-[minmax(0,1fr)] gap-1.5">
+          <div className="grid grid-cols-2 gap-1.5 lg:grid-cols-[minmax(0,1fr)]">
             {TYPES.filter((type) => catalogEntry(type).group === group).map((type) => (
               <PaletteItem key={type} type={type} onAdd={onAdd} />
             ))}
@@ -53,8 +53,8 @@ function PaletteItem({ type, onAdd }: { type: QuestionType; onAdd: (type: Questi
     >
       <PaletteIcon type={type} />
       <span className="min-w-0 flex-1">
-        <span className="block truncate text-sm font-bold">{entry.label}</span>
-        <span className="block truncate text-xs text-muted-foreground">{entry.description}</span>
+        <span className="block text-xs leading-tight font-bold lg:truncate lg:text-sm">{entry.label}</span>
+        <span className="hidden truncate text-xs text-muted-foreground lg:block">{entry.description}</span>
       </span>
       <Plus className="size-4 text-muted-foreground opacity-0 transition group-hover:opacity-100" />
     </button>

@@ -134,7 +134,7 @@ export function QuizBuilder({ quizId, initial }: QuizBuilderProps) {
           {taskWord(tasks)} · {plural(points, ['točka', 'točki', 'točke', 'točk'])}
           {dirty && <span className="ml-2 font-semibold text-amber-700">● neshranjene spremembe</span>}
         </span>
-        <div className="ml-auto flex items-center gap-3">
+        <div className="ml-auto flex flex-wrap items-center justify-end gap-2 sm:gap-3">
           <div className="flex items-center gap-2">
             <Switch
               id="published"
@@ -190,7 +190,7 @@ export function QuizBuilder({ quizId, initial }: QuizBuilderProps) {
             onDragEnd={onDragEnd}
             onDragCancel={() => setDragType(null)}
           >
-            <div className="grid items-start gap-4 lg:grid-cols-[15rem_minmax(0,1fr)_22rem]">
+            <div className="grid grid-cols-[minmax(0,1fr)] items-start gap-4 lg:grid-cols-[15rem_minmax(0,1fr)_22rem]">
               <aside className="rounded-3xl border bg-card p-4 lg:sticky lg:top-20 lg:max-h-[calc(100svh-6rem)] lg:overflow-y-auto">
                 <ElementPalette onAdd={(type) => addQuestion(type)} />
               </aside>

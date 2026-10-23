@@ -62,7 +62,7 @@ export function SettingsPanel({ draft }: { draft: QuizDraftApi }) {
     update('sources', state.sources.map((s, i) => (i === index ? value : s)))
 
   return (
-    <div className="grid items-start gap-4 lg:grid-cols-2">
+    <div className="grid grid-cols-[minmax(0,1fr)] items-start gap-4 lg:grid-cols-2">
       <div className="space-y-4">
         <Section title="Osnovno">
           <FormField id="description" label="Opis">

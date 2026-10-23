@@ -88,6 +88,9 @@ export async function downloadFile(path: string, filename: string): Promise<void
   const link = document.createElement('a')
   link.href = url
   link.download = filename
+  document.body.append(link)
   link.click()
-  URL.revokeObjectURL(url)
+  link.remove()
+  // nekateri brskalniki prenos začnejo šele po kliku, zato URL sprostimo kasneje
+  window.setTimeout(() => URL.revokeObjectURL(url), 1000)
 }
