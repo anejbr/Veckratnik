@@ -17,7 +17,7 @@ export function AppearancePanel({ draft }: { draft: QuizDraftApi }) {
   const { settings } = state
 
   return (
-    <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,1fr)_24rem]">
+    <div className="grid grid-cols-[minmax(0,1fr)] items-start gap-6 lg:grid-cols-[minmax(0,1fr)_24rem]">
       <div className="space-y-6 rounded-3xl border bg-card p-5">
         <section className="space-y-2">
           <Label className="text-base font-extrabold">Barvna tema</Label>
