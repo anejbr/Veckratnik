@@ -4,6 +4,7 @@ import { RequireAuth } from '@/auth/RequireAuth'
 import { AppShell } from '@/components/layout/AppShell'
 import { LandingPage } from '@/pages/LandingPage'
 import { NotFoundPage } from '@/pages/NotFoundPage'
+import { SourcesPage } from '@/pages/SourcesPage'
 import { StudentLoginPage } from '@/pages/auth/StudentLoginPage'
 import { StudentRegisterPage } from '@/pages/auth/StudentRegisterPage'
 import { TeacherLoginPage } from '@/pages/auth/TeacherLoginPage'
@@ -37,6 +38,7 @@ export const router = createBrowserRouter([
           { path: '/kvizi/:quizId', element: <QuizDetailPage /> },
           { path: '/rezultati/:attemptId', element: <QuizResultPage /> },
           { path: '/moji-rezultati', element: <MyResultsPage /> },
+          { path: '/viri', element: <SourcesPage /> },
         ],
       },
       {

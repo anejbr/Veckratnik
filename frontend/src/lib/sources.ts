@@ -7,6 +7,7 @@ export type Source = {
   /** kako je vir uporabljen v aplikaciji */
   usage: string
   forTasks: boolean
+  group: 'vsebina' | 'didaktika' | 'razvoj'
 }
 
 export const SOURCES: Source[] = [
@@ -17,6 +18,7 @@ export const SOURCES: Source[] = [
     short: 'Učni načrt za matematiko (2011)',
     usage: 'Vsebine in razredi demo kvizov (poštevanka, večkratniki in delitelji, računske operacije, besedilne naloge).',
     forTasks: true,
+    group: 'vsebina',
   },
   {
     id: 'miholic-2018',
@@ -24,6 +26,7 @@ export const SOURCES: Source[] = [
     short: 'Miholič – O poštevanki (2018)',
     usage: 'Postopno učenje poštevanke po skupinah števil (2, 5, 10 → 3, 4, 6 → 7, 8, 9) in povezava množenja z deljenjem.',
     forTasks: true,
+    group: 'vsebina',
   },
   {
     id: 'odredba-2025',
@@ -32,6 +35,7 @@ export const SOURCES: Source[] = [
     short: 'Odredba o spremembah programa OŠ (2025)',
     usage: 'Okvir za usklajevanje vsebin kvizov s prenovljenim programom osnovne šole.',
     forTasks: true,
+    group: 'vsebina',
   },
   {
     id: 'mvi-2024',
@@ -39,6 +43,7 @@ export const SOURCES: Source[] = [
     short: 'MVI – zapisnik 9. seje (2024)',
     usage: 'Ozadje prenove učnih načrtov.',
     forTasks: true,
+    group: 'vsebina',
   },
   {
     id: 'sailer-2020',
@@ -47,6 +52,7 @@ export const SOURCES: Source[] = [
     short: 'Sailer in Homner – gamifikacija (2020)',
     usage: 'Elementi igrifikacije: barvne teme, napredek med reševanjem, takojšnja povratna informacija in pregled rezultatov.',
     forTasks: true,
+    group: 'didaktika',
   },
   {
     id: 'ophuis-cox-2023',
@@ -55,6 +61,7 @@ export const SOURCES: Source[] = [
     short: 'Ophuis-Cox idr. – priklic poštevanke (2023)',
     usage: 'Generator poštevanke z novimi računi ob vsakem poskusu in merjenje časa – vaja priklica za tekoče znanje poštevanke.',
     forTasks: true,
+    group: 'didaktika',
   },
   {
     id: 'deci-1999',
@@ -63,6 +70,7 @@ export const SOURCES: Source[] = [
     short: 'Deci idr. – zunanje nagrade (1999)',
     usage: 'Brez javnih lestvic in nagrad – učenec primerja le svoje rezultate in čas s prejšnjimi poskusi.',
     forTasks: true,
+    group: 'didaktika',
   },
   {
     id: 'scrum-2020',
@@ -70,5 +78,6 @@ export const SOURCES: Source[] = [
     short: 'Scrum Guide (2020)',
     usage: 'Način timskega dela pri razvoju aplikacije (sprinti, razdelitev nalog med člane ekipe).',
     forTasks: false,
+    group: 'razvoj',
   },
 ]

@@ -1,4 +1,4 @@
-import { NavLink, Outlet } from 'react-router'
+import { Link, NavLink, Outlet } from 'react-router'
 
 import { useAuth } from '@/auth/auth-context'
 import { Logo } from '@/components/layout/Logo'
@@ -12,6 +12,7 @@ const navItems: NavItem[] = [
   { to: '/kvizi', label: 'Kvizi' },
   { to: '/moji-rezultati', label: 'Moji rezultati' },
   { to: '/ucitelj/kvizi', label: 'Moji kvizi', roles: ['teacher'] },
+  { to: '/viri', label: 'Viri' },
 ]
 
 export function AppShell() {
@@ -52,7 +53,10 @@ export function AppShell() {
       </main>
 
       <footer className="border-t py-6 text-center text-sm text-muted-foreground">
-        Večkratnik · matematični kvizi za osnovnošolce
+        Večkratnik · matematični kvizi za osnovnošolce ·{' '}
+        <Link to="/viri" className="font-semibold hover:text-foreground hover:underline">
+          Viri
+        </Link>
       </footer>
     </div>
   )
