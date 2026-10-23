@@ -47,7 +47,7 @@ export function StudentRegisterPage() {
     <AuthLayout
       role="student"
       title="Nov račun za učenca"
-      subtitle="Izmisli si uporabniško ime in geslo, ki si ga boš zapomnil."
+      subtitle="Izberi uporabniško ime in geslo ter si ju zapiši na varno mesto."
       footer={
         <p>
           Že imaš račun?{' '}

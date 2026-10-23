@@ -105,7 +105,7 @@ export function QuizResultPage() {
       <section className="space-y-3">
         <h2 className="text-xl font-extrabold">Pregled nalog</h2>
         {!result.show_correct_answers && (
-          <p className="text-sm text-muted-foreground">Učitelj je izbral, da se pravilni odgovori ne prikažejo.</p>
+          <p className="text-sm text-muted-foreground">Pri tem kvizu pravilni odgovori niso prikazani.</p>
         )}
         <ResultReview results={result.results} showExpected={result.show_correct_answers} />
       </section>

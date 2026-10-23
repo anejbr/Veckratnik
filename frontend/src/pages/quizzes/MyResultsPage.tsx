@@ -36,7 +36,7 @@ export function MyResultsPage() {
     <div className="space-y-6">
       <div>
         <h1 className="text-3xl font-black tracking-tight">Moji rezultati</h1>
-        <p className="mt-1 text-muted-foreground">Primerjaj se sam s sabo – vsak poskus je korak naprej.</p>
+        <p className="mt-1 text-muted-foreground">Primerjaj svoje rezultate s prejšnjimi – vsak poskus je korak naprej.</p>
       </div>
 
       {list.length === 0 ? (
