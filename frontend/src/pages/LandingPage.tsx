@@ -28,13 +28,6 @@ export function LandingPage() {
 
   return (
     <div className="relative flex min-h-svh flex-col items-center justify-center overflow-hidden px-4 py-12">
-      <div aria-hidden className="pointer-events-none absolute inset-0 select-none text-7xl font-black text-primary/5">
-        <span className="absolute top-[8%] left-[6%]">2×3</span>
-        <span className="absolute top-[18%] right-[10%]">7·8</span>
-        <span className="absolute bottom-[14%] left-[12%]">36:6</span>
-        <span className="absolute right-[8%] bottom-[8%]">5×9</span>
-      </div>
-
       <div className="relative flex w-full max-w-3xl flex-col items-center gap-4 text-center">
         <Logo className="scale-125" />
         <h1 className="mt-4 text-4xl font-black tracking-tight sm:text-5xl">Matematika je igra!</h1>
