@@ -31,12 +31,16 @@ def _sign(left: str, right: str) -> str:
 def generate_times_table(config: dict[str, Any], entry_id: str, rng: random.Random) -> list[dict[str, Any]]:
     operation = config.get("operation", "multiply")
     operations = ["multiply", "divide"] if operation == "mixed" else [operation]
-    pool = [
-        (factor, multiplier, op)
-        for factor in config["factors"]
-        for multiplier in range(1, int(config.get("max_multiplier", 10)) + 1)
-        for op in operations
-    ]
+    pool: list[tuple[int, int, str]] = []
+    seen: set[tuple[Any, ...]] = set()
+    for factor in config["factors"]:
+        for multiplier in range(1, int(config.get("max_multiplier", 10)) + 1):
+            for op in operations:
+                # 3 · 9 in 9 · 3 sta isti račun poštevanke
+                key = (op, *sorted((factor, multiplier))) if op == "multiply" else (op, factor, multiplier)
+                if key not in seen:
+                    seen.add(key)
+                    pool.append((factor, multiplier, op))
     count = int(config.get("count", 10))
     chosen: list[tuple[int, int, str]] = []
     while len(chosen) < count:
