@@ -6,7 +6,7 @@ import { toast } from 'sonner'
 
 import { ConfirmDialog } from '@/components/ConfirmDialog'
 import { Timer } from '@/components/player/Timer'
-import { initialAnswer, isAnswered } from '@/components/questions/answers'
+import { initialAnswer, isAnswered, taskProgress } from '@/components/questions/answers'
 import { QuestionCard } from '@/components/questions/QuestionCard'
 import { Button } from '@/components/ui/button'
 import { Progress } from '@/components/ui/progress'
@@ -52,9 +52,14 @@ export function QuizPlayer({ attempt }: { attempt: AttemptView }) {
     let counter = 0
     return attempt.questions.map((q) => (q.type === 'info' ? undefined : ++counter))
   }, [attempt.questions])
-  const gradable = attempt.questions.filter((q) => q.type !== 'info')
-  const answeredCount = gradable.filter((q) => isAnswered(q, answers[q.id])).length
-  const unanswered = gradable.length - answeredCount
+  const [answeredCount, totalTasks] = attempt.questions.reduce(
+    ([done, total], q) => {
+      const [d, t] = taskProgress(q, answers[q.id])
+      return [done + d, total + t]
+    },
+    [0, 0],
+  )
+  const unanswered = totalTasks - answeredCount
 
   useEffect(() => {
     try {
@@ -135,8 +140,8 @@ export function QuizPlayer({ attempt }: { attempt: AttemptView }) {
         </div>
         <div className="mx-auto max-w-3xl px-4 pb-2">
           <div className="flex items-center gap-3 text-xs font-bold text-muted-foreground">
-            <Progress value={gradable.length ? (100 * answeredCount) / gradable.length : 100} className="h-2 flex-1" />
-            {answeredCount}/{gradable.length}
+            <Progress value={totalTasks ? (100 * answeredCount) / totalTasks : 100} className="h-2 flex-1" />
+            {answeredCount}/{totalTasks}
           </div>
         </div>
       </header>
@@ -197,7 +202,7 @@ export function QuizPlayer({ attempt }: { attempt: AttemptView }) {
         open={confirmOpen}
         onOpenChange={setConfirmOpen}
         title="Oddam kviz?"
-        description={`Brez odgovora: ${unanswered} od ${gradable.length} nalog. Po oddaji odgovorov ne moreš več spreminjati.`}
+        description={`Neodgovorjenih nalog: ${unanswered} (od ${totalTasks}). Po oddaji odgovorov ne moreš več spreminjati.`}
         confirmLabel="Oddaj"
         pending={submit.isPending}
         onConfirm={() => {
