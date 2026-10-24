@@ -24,3 +24,14 @@ export function isAnswered(question: QuestionView, answer: Answer | undefined): 
   if (question.type === 'times_table' || question.type === 'arithmetic') return filled === question.items.length
   return filled > 0
 }
+
+/** Napredek naloge kot [rešeno, skupaj]; generator šteje vsak račun posebej. */
+export function taskProgress(question: QuestionView, answer: Answer | undefined): [number, number] {
+  if (question.type === 'info') return [0, 0]
+  if (question.type === 'times_table' || question.type === 'arithmetic') {
+    const filled = answer && typeof answer === 'object' && !Array.isArray(answer) ? (answer as Record<string, string>) : {}
+    const done = question.items.filter((item) => String(filled[item.id] ?? '').trim() !== '').length
+    return [done, question.items.length]
+  }
+  return [isAnswered(question, answer) ? 1 : 0, 1]
+}
