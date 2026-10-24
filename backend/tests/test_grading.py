@@ -75,6 +75,13 @@ def test_times_table_generator() -> None:
     assert len({item["text"] for item in items}) == 20
 
 
+def test_times_table_has_no_commuted_duplicates() -> None:
+    config = {"factors": [2, 3, 4, 5, 6, 7, 8, 9, 10], "max_multiplier": 10, "operation": "multiply", "count": 30}
+    items = generate_times_table(config, "q1", random.Random(5))
+    facts = [tuple(sorted(int(n) for n in item["text"].split(" · "))) for item in items]
+    assert len(facts) == len(set(facts))
+
+
 def test_arithmetic_generator_has_no_negative_results() -> None:
     config = {"operations": ["-", ":"], "min_value": 0, "max_value": 20, "count": 30, "allow_negative": False}
     for item in generate_arithmetic(config, "q1", random.Random(3)):
