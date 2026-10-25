@@ -16,7 +16,7 @@ const navItems: NavItem[] = [
   { to: '/kvizi', label: 'Kvizi' },
   { to: '/moji-rezultati', label: 'Moji rezultati' },
   { to: '/ucitelj/kvizi', label: 'Moji kvizi', roles: ['teacher'] },
-  { to: '/viri', label: 'Viri' },
+  // { to: '/viri', label: 'Viri' },
 ]
 
 const linkClass = ({ isActive }: { isActive: boolean }) =>
@@ -84,9 +84,9 @@ export function AppShell() {
 
       <footer className="border-t py-6 text-center text-sm text-muted-foreground">
         Večkratnik · matematični kvizi za osnovnošolce ·{' '}
-        <Link to="/viri" className="font-semibold hover:text-foreground hover:underline">
+        {/* <Link to="/viri" className="font-semibold hover:text-foreground hover:underline">
           Viri
-        </Link>
+        </Link> */}
       </footer>
     </div>
   )
